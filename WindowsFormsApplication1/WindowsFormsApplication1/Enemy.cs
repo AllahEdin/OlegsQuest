@@ -10,7 +10,7 @@ namespace WindowsFormsApplication1
     {
         public static int vision = 0,
             rage = 0,
-           sasi = 0;
+
         public static double rage_coeff = 0;
     }
 }
