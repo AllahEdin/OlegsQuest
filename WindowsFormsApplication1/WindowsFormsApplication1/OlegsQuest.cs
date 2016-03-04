@@ -234,8 +234,11 @@ namespace WindowsFormsApplication1
             prepod_name.Text = s;
             s = sr.ReadLine();
             s = sr.ReadLine();
-            Enemy.rage = Int32.Parse(s);
-            set_rage();
+            //Enemy.rage = Int32.Parse(s);
+            // set_rage();
+            Enemy.rage = 0;
+            double d2 = Double.Parse(s);
+            set_rage_value(d2); 
             s = sr.ReadLine();
             Enemy.rage_coeff = Double.Parse(s);
             s = sr.ReadLine();
