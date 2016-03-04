@@ -13,7 +13,7 @@ namespace WindowsFormsApplication1
 {
     public partial class OlegsQuest : Form
     {
-
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OlegsQuest));
         short sys = 1,
               react = 2;
         
@@ -248,6 +248,56 @@ namespace WindowsFormsApplication1
             rage_bar.Value = Enemy.rage;
         }
 
+        private void set_rage_value(double t)
+        {
+            int d = (Int32)t;
+            if (Enemy.rage == 100) return;
+            if (t > 0)
+            {
+                if (Enemy.rage + d > 100)
+                {
+                    Enemy.rage = 100;
+                    set_rage();
+                }
+                else
+                {
+                    Enemy.rage += d;
+                    set_rage();
+                }
+            }
+            if (Enemy.rage<33)
+            {
+                this.kuzmin_face.Image = ((System.Drawing.Image)(resources.GetObject("kuz5_2.Image")));
+                this.kuzmin_face.Location = new System.Drawing.Point(16, 373);
+                this.kuzmin_face.Name = "kuzmin_face";
+                this.kuzmin_face.Size = new System.Drawing.Size(84, 70);
+                this.kuzmin_face.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+                this.kuzmin_face.TabIndex = 24;
+                this.kuzmin_face.TabStop = false;
+            }
+            else if (Enemy.rage<66)
+            {
+                this.kuzmin_face.Image = ((System.Drawing.Image)(resources.GetObject("kuz4.Image")));
+                this.kuzmin_face.Location = new System.Drawing.Point(16, 373);
+                this.kuzmin_face.Name = "kuzmin_face";
+                this.kuzmin_face.Size = new System.Drawing.Size(84, 70);
+                this.kuzmin_face.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+                this.kuzmin_face.TabIndex = 24;
+                this.kuzmin_face.TabStop = false;
+            }
+            else 
+            {
+                this.kuzmin_face.Image = ((System.Drawing.Image)(resources.GetObject("kuz3.Image")));
+                this.kuzmin_face.Location = new System.Drawing.Point(16, 373);
+                this.kuzmin_face.Name = "kuzmin_face";
+                this.kuzmin_face.Size = new System.Drawing.Size(84, 70);
+                this.kuzmin_face.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+                this.kuzmin_face.TabIndex = 24;
+                this.kuzmin_face.TabStop = false;
+            }
+
+        }
+
         private void label2_Click(object sender, EventArgs e)
         {
 
@@ -267,8 +317,7 @@ namespace WindowsFormsApplication1
             if (d > 100)
             {
                 message(prepod_name.Text + " is in RAGE");
-                Enemy.rage = 100;
-                set_rage();
+                set_rage_value(100);             
             }
             else
             {
@@ -277,8 +326,9 @@ namespace WindowsFormsApplication1
                 buff = comletition.Value - buff;
                 message("You got " + buff + " % of your work");
                 buff = Enemy.rage;
-                Enemy.rage = (Int32)d;
-                set_rage();
+                //Enemy.rage = (Int32)d;
+                set_rage_value(Enemy.rage_coeff * (k - Game.intel * 5));
+                //set_rage();
                 buff = Enemy.rage - buff;
                 message(prepod_name.Text + " gets +" + buff + " rage");
                 message(sys,"What next?");
@@ -298,17 +348,45 @@ namespace WindowsFormsApplication1
 
         private void use2_Click(object sender, EventArgs e)
         {
-            Game.umiUsed = true;
-            if (Game.ap < 4 || Enemy.rage == 100) return;
+           
+            if (Game.ap < 4 || Enemy.rage == 100 || Game.umiUsed == true) return;
             Game.ap -= 4;
             action.Text = Game.ap.ToString();
             Random rand = new Random();
+            int k = rand.Next(1, 100);
             if (Enemy.rage <= 25) 
             {
-                if (rand.Next(1, 2) == 2) comletition.Value += 40;
-                else Enemy.rage += 40;
+                if (k>=50)
+                {
+                    comletition.Value += 30;
+                }
+                else set_rage_value(40);                
             }
-
+            else if (Enemy.rage <= 50)
+            {
+                if (k >= 60)
+                {
+                    comletition.Value += 30;
+                }
+                else set_rage_value(40);
+            }
+            else if (Enemy.rage <= 75)
+            {
+                if (k >= 70)
+                {
+                    comletition.Value += 30;
+                }
+                else set_rage_value(40);
+            }
+            else 
+            {
+                if (k >= 80)
+                {
+                    comletition.Value += 30;
+                }
+                else set_rage_value(40);
+            }
+            Game.umiUsed = true;
         }
     }
 }
